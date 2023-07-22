@@ -7,16 +7,14 @@ import { FaRobot } from 'react-icons/fa';
 import * as S from './styles/Home';
 
 var stompClient = null;
-const uniqueId = `${Date.now()}${Math.random().toString(36).substr(2, 9)}`;
+const uniqueId = 'author-user';
 
 function Home() {
   const [privateChats, setPrivateChats] = React.useState([]);
   const [userData, setUserData] = React.useState({
-    username: '',
-    userid: uniqueId,
-    connected: false,
-    registered: false,
+    id: uniqueId,
     message: '',
+    connected: false,
   });
 
   const connect = () => {
@@ -27,10 +25,7 @@ function Home() {
 
   const onConnected = () => {
     setUserData({ ...userData, connected: true });
-    stompClient.subscribe(
-      '/user/' + userData.userid + '/private',
-      onPrivateMessage
-    );
+    stompClient.subscribe('/user', onPrivateMessage);
     if (stompClient.connected) {
       userJoin();
     }
@@ -38,9 +33,7 @@ function Home() {
 
   const userJoin = () => {
     var chatMessage = {
-      authorName: '',
-      authorId: userData.userid,
-      status: 'JOIN',
+      authorId: userData.id,
     };
     stompClient.send('/app/private-message', {}, JSON.stringify(chatMessage));
   };
@@ -50,9 +43,7 @@ function Home() {
     var payloadData = JSON.parse(payload.body);
     privateChats.push(payloadData);
     setPrivateChats(privateChats);
-    if (payloadData.message === 'Cadastro realizado com sucesso!') {
-      setUserData({ ...userData, registered: true });
-    }
+    setUserData({ ...userData });
   };
 
   const onError = (err) => {
@@ -68,13 +59,12 @@ function Home() {
   const sendPrivateValue = () => {
     if (stompClient) {
       var chatMessage = {
-        authorName: userData.username,
         authorId: userData.userid,
         message: userData.message,
-        status: userData.registered === false ? 'JOIN' : 'MESSAGE',
       };
       if (userData.message !== '') {
-        setPrivateChats([...privateChats, chatMessage]);
+        privateChats.push(chatMessage);
+        setPrivateChats(privateChats);
         stompClient.send(
           '/app/private-message',
           {},
@@ -92,22 +82,17 @@ function Home() {
         stompClient.disconnect();
       }
     };
-    console.log(userData);
   }, []);
-
-  React.useEffect(() => {
-    console.log(privateChats);
-  }, [privateChats]);
 
   return (
     <S.Container>
-      {userData.connected && (
+      {!userData.connected && (
         <>
           <S.ChatContent>
             <ul>
               {privateChats.map((chat, index) => (
-                <S.Message key={index} author={chat.authorName}>
-                  {chat.authorName !== userData.username && (
+                <S.Message key={index} authorId={chat.authorId}>
+                  {chat.authorId !== userData.id && (
                     <span>
                       <FaRobot /> EasyChat
                     </span>

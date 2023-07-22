@@ -111,12 +111,14 @@ export const Message = styled.li`
 
   list-style: none;
   background-color: ${(props) =>
-    props.author === 'Servidor' ? '#3d5a73' : '#38A87D'};
+    props.authorId === 'author-server' ? '#3d5a73' : '#38A87D'};
   color: rgba(255, 255, 255, 0.83);
 
   padding: 10px;
-  margin-left: ${(props) => (props.author === 'Servidor' ? 'none' : 'auto')};
-  text-align: ${(props) => (props.author === 'Servidor' ? 'start' : 'end')};
+  margin-left: ${(props) =>
+    props.authorId === 'author-server' ? 'none' : 'auto'};
+  text-align: ${(props) =>
+    props.authorId === 'author-server' ? 'start' : 'end'};
 
   border-radius: 10px;
 
