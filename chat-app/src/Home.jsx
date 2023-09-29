@@ -31,9 +31,14 @@ function Home() {
     }
   };
 
+  const formatStringsFromBackEnd = (message) => {
+    return message.split('\n').map((str, index) => <p key={index}>{str}</p>);
+  };
+
   const userJoin = () => {
     var chatMessage = {
       authorId: userData.id,
+      message: 'User joined the chat',
     };
     stompClient.send('/app/private-message', {}, JSON.stringify(chatMessage));
   };
@@ -86,42 +91,40 @@ function Home() {
 
   return (
     <S.Container>
-      {!userData.connected && (
-        <>
-          <S.ChatContent>
-            <ul>
-              {privateChats.map((chat, index) => (
-                <S.Message key={index} authorId={chat.authorId}>
-                  {chat.authorId !== userData.id && (
-                    <span>
-                      <FaRobot /> EasyChat
-                    </span>
-                  )}
+      <S.ChatContent>
+        {!userData.connected && (
+          <ul>
+            {privateChats.map((chat, index) => (
+              <S.Message key={index} authorId={chat.authorId}>
+                {chat.authorId !== userData.id && (
+                  <span>
+                    <FaRobot /> EasyChat
+                  </span>
+                )}
 
-                  <p>{chat.message}</p>
-                </S.Message>
-              ))}
-              <div style={{ height: 240 }}></div>
-            </ul>
-          </S.ChatContent>
-          <S.MessageBarContainer>
-            <input
-              type='text'
-              className='input-message'
-              placeholder='Enter the message'
-              value={userData.message}
-              onChange={handleMessage}
-            />
-            <button
-              type='button'
-              className='send-button'
-              onClick={sendPrivateValue}
-            >
-              <RiSendPlaneFill />
-            </button>
-          </S.MessageBarContainer>
-        </>
-      )}
+                {formatStringsFromBackEnd(chat.message)}
+              </S.Message>
+            ))}
+            <div style={{ height: 240 }}></div>
+          </ul>
+        )}
+      </S.ChatContent>
+      <S.MessageBarContainer>
+        <input
+          type='text'
+          className='input-message'
+          placeholder='Enter the message'
+          value={userData.message}
+          onChange={handleMessage}
+        />
+        <button
+          type='button'
+          className='send-button'
+          onClick={sendPrivateValue}
+        >
+          <RiSendPlaneFill />
+        </button>
+      </S.MessageBarContainer>
     </S.Container>
   );
 }
