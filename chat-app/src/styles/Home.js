@@ -47,7 +47,7 @@ export const ChatBox = styled.div`
   &::-webkit-scrollbar {
     width: 10;
   }
-  ::-webkit-scrollbar-track {
+  &::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px grey;
     border-radius: 10px;
   }
