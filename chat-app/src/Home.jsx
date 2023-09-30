@@ -12,7 +12,7 @@ const uniqueId = 'author-user';
 function Home() {
   const [privateChats, setPrivateChats] = React.useState([]);
   const [userData, setUserData] = React.useState({
-    id: uniqueId,
+    id: 'author-user',
     message: '',
     connected: false,
   });
@@ -93,23 +93,30 @@ function Home() {
     <S.Container>
       <S.ChatContent>
         {!userData.connected && (
-          <ul>
-            {privateChats.map((chat, index) => (
-              <S.Message key={index} authorId={chat.authorId}>
-                {chat.authorId !== userData.id && (
-                  <span>
-                    <FaRobot /> EasyChat
-                  </span>
-                )}
+          <S.ChatBox>
+            <ul>
+              {privateChats.map((chat, index) => (
+                <S.Message key={index} authorId={chat.authorId}>
+                  {chat.authorId !== userData.id && (
+                    <span>
+                      <FaRobot /> MeuChat.app
+                    </span>
+                  )}
 
-                {formatStringsFromBackEnd(chat.message)}
-              </S.Message>
-            ))}
-            <div style={{ height: 240 }}></div>
-          </ul>
+                  {formatStringsFromBackEnd(chat.message)}
+                </S.Message>
+              ))}
+              <div></div>
+            </ul>
+          </S.ChatBox>
         )}
       </S.ChatContent>
-      <S.MessageBarContainer>
+      <S.MessageBarContainer
+        onSubmit={(event) => {
+          event.preventDefault();
+          sendPrivateValue();
+        }}
+      >
         <input
           type='text'
           className='input-message'

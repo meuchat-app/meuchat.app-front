@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const Container = styled.div`
   margin: 0 auto;
   height: 100vh;
-  max-width: 1100px;
   width: 100%;
 
   position: relative;
@@ -39,7 +38,34 @@ export const Register = styled.form`
   }
 `;
 
-export const ChatBox = styled.div``;
+export const ChatBox = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  &::-webkit-scrollbar {
+    width: 10;
+  }
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+  }
+
+  ul {
+    max-width: 1100px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  div {
+    height: 240px;
+  }
+`;
 
 export const MemberList = styled.div`
   ul {
@@ -58,7 +84,6 @@ export const MessageBarContainer = styled.form`
   display: flex;
 
   bottom: 0;
-  left: 0;
 
   height: 240px;
   align-items: center;
@@ -86,6 +111,7 @@ export const MessageBarContainer = styled.form`
   }
 
   input {
+    max-width: 1100px;
     width: 100%;
     height: 6.2rem;
     border: none;
@@ -138,15 +164,6 @@ export const ChatContent = styled.div`
   flex-direction: column;
 
   justify-content: flex-end;
-
-  ul {
-    overflow-y: scroll;
-    scroll-behavior: smooth;
-    &::-webkit-scrollbar {
-      width: 0;
-      height: 0;
-    }
-  }
 
   li + li {
     margin-top: 10px;
