@@ -25,9 +25,6 @@ export const Container = styled.div`
     padding-left: 1rem;
     padding-right: 1rem;
   }
-
-  header {
-  }
 `;
 
 export const Register = styled.form`
@@ -46,9 +43,11 @@ export const ChatBox = styled.div`
   scroll-behavior: smooth;
   &::-webkit-scrollbar {
     width: 10;
+    background: rgba(0, 0, 0, 0.38);
   }
-  &::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px grey;
+
+  &::-webkit-scrollbar-thumb {
+    background: grey;
     border-radius: 10px;
   }
 
@@ -64,6 +63,15 @@ export const ChatBox = styled.div`
 
   div {
     height: 240px;
+  }
+
+  @media screen and (max-width: 820px) {
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+    div {
+      height: 6rem;
+    }
   }
 `;
 
@@ -89,11 +97,17 @@ export const MessageBarContainer = styled.form`
   align-items: center;
   justify-content: center;
 
-  background-image: linear-gradient(to top, #313238, transparent);
+  background-image: linear-gradient(
+    to top,
+    #313238,
+    #313238 70%,
+    transparent 100%
+  );
 
   button {
     width: 6.2rem;
     height: 6.2rem;
+    touch-action: manipulation;
 
     border: none;
     border-top-right-radius: 10px;
@@ -129,6 +143,23 @@ export const MessageBarContainer = styled.form`
       color: rgba(255, 255, 255, 0.38);
     }
   }
+
+  @media screen and (max-width: 820px) {
+    input {
+      font-size: 15px;
+      height: 5rem;
+    }
+    button {
+      width: 5rem;
+      height: 5rem;
+    }
+    padding: 0.5rem;
+    left: 0;
+    height: auto;
+    width: 100vw;
+    position: fixed;
+    background-color: #313238;
+  }
 `;
 
 export const Message = styled.li`
@@ -155,6 +186,11 @@ export const Message = styled.li`
 
   p {
     word-wrap: break-word;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 15px;
+    padding: 5px;
   }
 `;
 

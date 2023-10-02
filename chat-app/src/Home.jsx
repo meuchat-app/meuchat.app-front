@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import { RiSendPlaneFill } from 'react-icons/ri';
@@ -10,9 +10,11 @@ var stompClient = null;
 const uniqueId = 'author-user';
 
 function Home() {
+  const messageInputRef = useRef(null);
+
   const [privateChats, setPrivateChats] = React.useState([]);
   const [userData, setUserData] = React.useState({
-    id: 'author-user',
+    id: uniqueId,
     message: '',
     connected: false,
   });
@@ -87,6 +89,7 @@ function Home() {
         stompClient.disconnect();
       }
     };
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -97,7 +100,7 @@ function Home() {
             <ul>
               {privateChats.map((chat, index) => (
                 <S.Message key={index} authorId={chat.authorId}>
-                  {chat.authorId !== userData.id && (
+                  {chat.authorId === uniqueId && (
                     <span>
                       <FaRobot /> MeuChat.app
                     </span>
@@ -119,6 +122,7 @@ function Home() {
       >
         <input
           type='text'
+          ref={messageInputRef}
           className='input-message'
           placeholder='Enter the message'
           value={userData.message}
@@ -127,7 +131,11 @@ function Home() {
         <button
           type='button'
           className='send-button'
-          onClick={sendPrivateValue}
+          onClick={(event) => {
+            event.preventDefault();
+            messageInputRef.current.focus();
+            sendPrivateValue();
+          }}
         >
           <RiSendPlaneFill />
         </button>
